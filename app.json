@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "splash": {
       "image": "./assets/images/splash.jpg",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {

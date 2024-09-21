@@ -1,0 +1,25 @@
+{
+  "build": {
+    "production": {
+      "distribution": "store",
+      "env": {
+        "API_URL":"https://recipes-api-test-600h.onrender.com/"
+      },
+      "channel": "production"
+    },
+    "test": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "API_URL":"https://recipes-api-test-600h.onrender.com/"
+      },
+      "channel": "test"
+    }
+  }
+}
