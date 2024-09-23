@@ -1,10 +1,10 @@
-import {Ingredient} from "@/app/models/Ingredient";
+import { Ingredient } from '@/app/models/Ingredient'
 
 export interface Recipe {
-    id: number
+    id?: number
     title: string
     description?: string
-    image?: string
+    imageUrl?: string
     ingredients: Ingredient[]
     favorite?: boolean
 }

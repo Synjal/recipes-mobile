@@ -1,9 +1,9 @@
-import React, {FC, useState} from "react";
-import { StyleSheet } from "react-native"
-import {SearchbarRecipesProps} from "@/app/models/ScreenProps";
-import {Searchbar} from "react-native-paper";
+import React, { FC, useState } from 'react'
+import { StyleSheet } from 'react-native'
+import { SearchbarRecipesProps } from '@/app/models/props/ScreenProps'
+import { Searchbar } from 'react-native-paper'
 
-export const SearchbarRecipes: FC<SearchbarRecipesProps> = ({ onSearch }) => {
+export const SearchBar: FC<SearchbarRecipesProps> = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState<string>('')
 
     const handleSearchChange = (query: string) => {
@@ -16,7 +16,7 @@ export const SearchbarRecipes: FC<SearchbarRecipesProps> = ({ onSearch }) => {
             placeholder="Search recipes..."
             onChangeText={handleSearchChange}
             value={searchQuery}
-            style={ styles.searchBar }
+            style={styles.searchBar}
         />
     )
 }
