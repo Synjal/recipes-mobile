@@ -1,10 +1,14 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useContext, useEffect } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
 import { SplashScreenProps } from '@/app/models/props/ScreenProps'
+import { RecipeContext } from '@/app/context/RecipeContext'
 
 export const SplashScreen: FC<SplashScreenProps> = ({ navigation }) => {
+    const { getAllRecipes } = useContext(RecipeContext)
+
     useEffect(() => {
         const initializeApp = async () => {
+            await getAllRecipes()
             navigation.navigate('RecipeScreen')
         }
         const timeout = setTimeout(initializeApp, 3000)

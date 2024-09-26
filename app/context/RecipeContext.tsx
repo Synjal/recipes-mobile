@@ -6,6 +6,7 @@ import {
     RecipeProviderProps,
 } from '@/app/models/props/RecipeContextProps'
 import axios from 'axios/index'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getMimeType } from '@/app/utils/getMimeType'
 
 export const RecipeContext = createContext<RecipeContextProps>(defaultRecipeContextValue)
@@ -13,14 +14,15 @@ export const RecipeContext = createContext<RecipeContextProps>(defaultRecipeCont
 export const RecipeProvider: FC<RecipeProviderProps> = ({ children }) => {
     const [recipes, setRecipes] = useState<Recipe[]>([])
 
-    useEffect(() => {
-        getAllRecipes().then(() => console.log('All recipes loaded'))
-    }, [])
-
     const getAllRecipes = useCallback(async (): Promise<void> => {
         try {
+            const cachedRecipes = await AsyncStorage.getItem('recipes')
+            setRecipes(cachedRecipes ? JSON.parse(cachedRecipes) : [])
+
             const response = await axios.get<{ recipes: Recipe[] }>(process.env.EXPO_PUBLIC_API_URL + 'recipe')
             setRecipes(response.data.recipes)
+
+            await AsyncStorage.setItem('recipes', JSON.stringify(response.data.recipes))
         } catch (err) {
             console.error('Error fetching recipes:', err)
         }
