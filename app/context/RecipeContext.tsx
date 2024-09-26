@@ -1,4 +1,4 @@
-import React, { createContext, FC, useEffect, useState } from 'react'
+import React, { createContext, FC, useCallback, useEffect, useState } from 'react'
 import { Recipe } from '@/app/models/Recipe'
 import {
     defaultRecipeContextValue,
@@ -17,46 +17,56 @@ export const RecipeProvider: FC<RecipeProviderProps> = ({ children }) => {
         getAllRecipes().then(() => console.log('All recipes loaded'))
     }, [])
 
-    const getAllRecipes = async (): Promise<void> => {
+    const getAllRecipes = useCallback(async (): Promise<void> => {
         try {
-            const response = await axios.get<{ recipes: Recipe[] }>(process.env.EXPO_PUBLIC_API_URL + 'recipe' || '')
+            const response = await axios.get<{ recipes: Recipe[] }>(process.env.EXPO_PUBLIC_API_URL + 'recipe')
             setRecipes(response.data.recipes)
         } catch (err) {
             console.error('Error fetching recipes:', err)
         }
+    }, [])
+
+    const uploadImage = async (recipe: Recipe): Promise<void> => {
+        if (!recipe.image) {
+            throw new Error('Image is required')
+        }
+
+        const formData = new FormData()
+        const mimeType = getMimeType(recipe.image).split('/')[1]
+
+        const image = {
+            uri: recipe.image,
+            name: recipe.title,
+            type: 'image/' + mimeType,
+        } as any
+        formData.append('image', image)
+
+        const response = await axios.post(process.env.EXPO_PUBLIC_API_URL + 'image/' + recipe.id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        return response.data
     }
 
     const addRecipe = async (item: Recipe): Promise<void> => {
         try {
-            if (item.imageUrl) {
-                const imgUrl = await uploadImage(item.imageUrl, item.id as string)
-                item.imageUrl = imgUrl.data.imageUrl
-            }
+            console.log('Before adding: ', item)
+            const newRecipe = await axios.post<Recipe>(process.env.EXPO_PUBLIC_API_URL + 'recipe', item)
+            item.id = newRecipe.data.id
+            console.log('After adding: ', item)
 
-            await axios.post<Recipe>(process.env.EXPO_PUBLIC_API_URL + 'recipe' || '', item)
+            item.image && (await uploadImage(item))
+
             await getAllRecipes()
         } catch (err) {
             console.error('Error adding recipe:', err)
         }
     }
 
-    const uploadImage = async (uri: string, recipeId: string) => {
-        const formData = new FormData()
-        const mimeType = getMimeType(uri)
-
-        const image = {
-            uri,
-            name: `profilePicture.${mimeType.split('/')[1]}`,
-            type: mimeType,
-        } as any
-        formData.append('image', image)
-
-        return await axios.post(process.env.EXPO_PUBLIC_API_URL + '/image/' + recipeId, formData)
-    }
-
     const updateRecipe = async (item: Recipe): Promise<void> => {
         try {
-            await axios.put<Recipe>(process.env.EXPO_PUBLIC_API_URL + `recipe/${item.id}` || '', item)
+            await axios.put<Recipe>(process.env.EXPO_PUBLIC_API_URL + `recipe/${item.id}`, item)
             await getAllRecipes()
         } catch (err) {
             console.error('Error updating recipe:', err)
@@ -89,6 +99,7 @@ export const RecipeProvider: FC<RecipeProviderProps> = ({ children }) => {
                 getAllRecipes,
                 addRecipe,
                 updateRecipe,
+                uploadImage,
                 bookmarkRecipe,
                 deleteRecipe,
             }}

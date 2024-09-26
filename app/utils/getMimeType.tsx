@@ -1,5 +1,9 @@
 export const getMimeType = (uri: string) => {
-    const extension = uri.split('.').pop()
+    const extension = uri.split('.').pop()?.toLowerCase()
+    if (!extension) {
+        return 'application/octet-stream'
+    }
+
     switch (extension) {
         case 'jpg':
         case 'jpeg':

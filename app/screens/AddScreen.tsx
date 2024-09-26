@@ -43,7 +43,7 @@ export const AddScreen: FC = () => {
                         ingredients: [{ name: '', quantity: '', unit: Unit.g }],
                     }}
                     validationSchema={addRecipeValidator}
-                    onSubmit={(inputs, { resetForm }) => {
+                    onSubmit={async (inputs, { resetForm }) => {
                         const values = {
                             ...inputs,
                             ingredients: inputs.ingredients.map(ingredient => ({
@@ -52,11 +52,10 @@ export const AddScreen: FC = () => {
                             })),
                         }
 
-                        addRecipe(values).then(() => {
-                            showSnackbar('Nice, a new recipe has been added !')
-                            resetForm()
-                            titleRef.current.focus()
-                        })
+                        await addRecipe(values)
+                        showSnackbar('Nice, a new recipe has been added !')
+                        resetForm()
+                        titleRef.current.focus()
                     }}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => {

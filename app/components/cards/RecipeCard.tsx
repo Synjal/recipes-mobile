@@ -37,7 +37,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({ recipe, width }) => {
                 />
                 <Image
                     source={{
-                        uri: `${recipe.imageUrl}`,
+                        uri: `${recipe.image}`,
                     }}
                     style={styles.image}
                 />

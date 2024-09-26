@@ -4,7 +4,7 @@ export interface Recipe {
     id?: string
     title: string
     description?: string
-    imageUrl?: string
+    image?: string
     ingredients: Ingredient[]
     favorite?: boolean
 }

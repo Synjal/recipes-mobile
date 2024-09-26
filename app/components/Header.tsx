@@ -15,7 +15,6 @@ export const Header: FC<HeaderProps> = ({
     back = true,
     add = false,
     remove = false,
-    update = false,
     favorite = false,
     onFavorite,
 }) => {
@@ -35,15 +34,11 @@ export const Header: FC<HeaderProps> = ({
         onFavorite && onFavorite(!isFavorite)
     }
 
-    const handleRemove = () => {
-        recipe &&
-            recipe.id &&
-            deleteRecipe(recipe.id).then(r => {
-                console.log('Recipe deleted:', r)
-                hideDialog()
-                showSnackbar('The recipe has been deleted :(')
-                navigation.navigate('RecipeScreen')
-            })
+    const handleRemove = async () => {
+        recipe && recipe.id && (await deleteRecipe(recipe.id))
+        hideDialog()
+        showSnackbar('The recipe has been deleted :(')
+        navigation.navigate('RecipeScreen')
     }
 
     return (
@@ -65,17 +60,6 @@ export const Header: FC<HeaderProps> = ({
                     icon={isFavorite ? 'heart' : 'heart-outline'}
                     onPress={handleFavorite}
                     mode="contained"
-                    iconColor={'black'}
-                    containerColor={colors.primary}
-                />
-            )}
-
-            {/* Update button */}
-            {update && (
-                <IconButton
-                    icon={'notebook-edit'}
-                    onPress={() => console.log('Handle update recipe')}
-                    mode={'contained'}
                     iconColor={'black'}
                     containerColor={colors.primary}
                 />
@@ -110,10 +94,10 @@ export const Header: FC<HeaderProps> = ({
                     </Dialog.Content>
                     <Dialog.Actions style={styles.actions}>
                         <Button
-                            mode="contained"
+                            mode="text"
                             onPress={hideDialog}
                             labelStyle={styles.buttonText}
-                            style={[styles.dialogButton, { backgroundColor: colors.fourth }]}
+                            style={styles.dialogButton}
                         >
                             No
                         </Button>
@@ -121,7 +105,7 @@ export const Header: FC<HeaderProps> = ({
                             mode="contained"
                             onPress={handleRemove}
                             labelStyle={styles.buttonText}
-                            style={[styles.dialogButton, { backgroundColor: colors.fifth }]}
+                            style={[styles.dialogButton, { backgroundColor: colors.primary }]}
                         >
                             Yes
                         </Button>
@@ -158,7 +142,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     buttonText: {
-        color: '#fff',
+        color: 'black',
         fontWeight: 'bold',
     },
 })

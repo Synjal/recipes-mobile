@@ -6,10 +6,6 @@ export interface SplashScreenProps {
     navigation: NavigationProp
 }
 
-export interface HomeScreenProps {
-    navigation: NavigationProp
-}
-
 export interface RecipeCardProps {
     recipe: Recipe
     width: number
@@ -22,7 +18,6 @@ export interface SearchbarRecipesProps {
 export interface HeaderProps {
     recipe?: Recipe
     back?: boolean
-    update?: boolean
     favorite?: boolean
     onFavorite?: Dispatch<SetStateAction<boolean>>
     add?: boolean
