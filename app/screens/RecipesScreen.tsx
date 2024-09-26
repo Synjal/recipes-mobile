@@ -8,6 +8,7 @@ import { Header } from '@/app/components/Header'
 import { colors } from '@/app/constants/colors'
 import { StatusBar } from 'expo-status-bar'
 import { RecipeContext } from '@/app/context/RecipeContext'
+import { normalizeString } from '@/app/utils/normalizeString'
 
 const cardMargin = 10
 const cardWidth = Dimensions.get('window').width / 2 - cardMargin * 2
@@ -21,9 +22,9 @@ export const RecipesScreen: FC = () => {
 
     const handleSearch = (query: string) => {
         setData(
-            (showFavorites ? favRecipes : recipes).filter(item =>
-                item.title.toLowerCase().includes(query.toLowerCase()),
-            ),
+            (showFavorites ? favRecipes : recipes).filter(item => {
+                return normalizeString(item.title).includes(normalizeString(query))
+            }),
         )
     }
 
@@ -36,7 +37,7 @@ export const RecipesScreen: FC = () => {
             <StatusBar backgroundColor={colors.primary} />
             <View style={styles.overlay} />
             <SafeAreaView style={styles.main}>
-                <Header back={false} favoriteSwitch onToggleFavorite={setShowFavorites} add />
+                <Header back={false} favorite onFavorite={setShowFavorites} add />
                 <View style={styles.container}>
                     <SearchBar onSearch={handleSearch} />
                     {data.length >= 1 ? (
@@ -72,15 +73,15 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'black',
-        opacity: 0.4,
+        backgroundColor: 'white',
+        opacity: 0.8,
     },
     container: {
         flex: 1,
         padding: 5,
         backgroundColor: 'transparent',
         opacity: 1,
-        marginTop: 56,
+        marginTop: 40,
     },
     row: {
         flex: 1,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     },
     noData: {
         fontSize: 16,
-        color: '#FFF',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
         letterSpacing: 0.33,

@@ -41,7 +41,9 @@ export const RecipeCard: FC<RecipeCardProps> = ({ recipe, width }) => {
                     }}
                     style={styles.image}
                 />
-                <Text style={styles.title}> {recipe.title} </Text>
+                <View style={styles.textContainer}>
+                    <Text style={styles.title}> {recipe.title} </Text>
+                </View>
             </View>
         </TouchableRipple>
     )
@@ -51,8 +53,6 @@ const styles = StyleSheet.create({
     recipe: {
         flex: 1,
         height: 200,
-        padding: 16,
-        marginVertical: 8,
         backgroundColor: colors.onPrimary,
         borderRadius: 10,
         elevation: 5,
@@ -61,22 +61,26 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '70%',
-        borderRadius: 10,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
         resizeMode: 'cover',
     },
+    textContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
     title: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 10,
-        color: '#333',
         textAlign: 'center',
     },
     icon: {
         zIndex: 1,
         position: 'absolute',
-        top: 0,
-        right: 0,
+        top: -10,
+        right: -10,
         borderRadius: 50,
         backgroundColor: colors.onPrimary,
         alignItems: 'center',

@@ -12,7 +12,7 @@ export interface RecipeContextProps {
     addRecipe: (recipe: Recipe) => Promise<void>
     updateRecipe: (recipe: Recipe) => Promise<void>
     bookmarkRecipe: (recipe: Recipe) => Promise<void>
-    deleteRecipe: (recipeId: number) => Promise<void>
+    deleteRecipe: (recipeId: string) => Promise<void>
 }
 
 export const defaultRecipeContextValue: RecipeContextProps = {

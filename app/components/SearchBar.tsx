@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { SearchbarRecipesProps } from '@/app/models/props/ScreenProps'
 import { Searchbar } from 'react-native-paper'
+import { colors } from '@/app/constants/colors'
 
 export const SearchBar: FC<SearchbarRecipesProps> = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState<string>('')
@@ -23,7 +24,7 @@ export const SearchBar: FC<SearchbarRecipesProps> = ({ onSearch }) => {
 
 const styles = StyleSheet.create({
     searchBar: {
-        backgroundColor: '#FFF',
+        backgroundColor: colors.onPrimary,
         marginBottom: 20,
         paddingHorizontal: 10,
         borderRadius: 30,

@@ -23,8 +23,8 @@ export interface HeaderProps {
     recipe?: Recipe
     back?: boolean
     update?: boolean
-    favoriteSwitch?: boolean
-    onToggleFavorite?: Dispatch<SetStateAction<boolean>>
+    favorite?: boolean
+    onFavorite?: Dispatch<SetStateAction<boolean>>
     add?: boolean
     remove?: boolean
 }

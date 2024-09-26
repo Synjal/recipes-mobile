@@ -6,6 +6,7 @@ import {
     RecipeProviderProps,
 } from '@/app/models/props/RecipeContextProps'
 import axios from 'axios/index'
+import { getMimeType } from '@/app/utils/getMimeType'
 
 export const RecipeContext = createContext<RecipeContextProps>(defaultRecipeContextValue)
 
@@ -27,11 +28,30 @@ export const RecipeProvider: FC<RecipeProviderProps> = ({ children }) => {
 
     const addRecipe = async (item: Recipe): Promise<void> => {
         try {
+            if (item.imageUrl) {
+                const imgUrl = await uploadImage(item.imageUrl, item.id as string)
+                item.imageUrl = imgUrl.data.imageUrl
+            }
+
             await axios.post<Recipe>(process.env.EXPO_PUBLIC_API_URL + 'recipe' || '', item)
             await getAllRecipes()
         } catch (err) {
             console.error('Error adding recipe:', err)
         }
+    }
+
+    const uploadImage = async (uri: string, recipeId: string) => {
+        const formData = new FormData()
+        const mimeType = getMimeType(uri)
+
+        const image = {
+            uri,
+            name: `profilePicture.${mimeType.split('/')[1]}`,
+            type: mimeType,
+        } as any
+        formData.append('image', image)
+
+        return await axios.post(process.env.EXPO_PUBLIC_API_URL + '/image/' + recipeId, formData)
     }
 
     const updateRecipe = async (item: Recipe): Promise<void> => {
@@ -52,7 +72,7 @@ export const RecipeProvider: FC<RecipeProviderProps> = ({ children }) => {
         }
     }
 
-    const deleteRecipe = async (id: number): Promise<void> => {
+    const deleteRecipe = async (id: string): Promise<void> => {
         try {
             await axios.delete(process.env.EXPO_PUBLIC_API_URL + `recipe/${id}` || '')
             await getAllRecipes()

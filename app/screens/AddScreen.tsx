@@ -1,20 +1,24 @@
 import React, { FC, useContext, useEffect, useRef, useState } from 'react'
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { IconButton, TextInput, TouchableRipple } from 'react-native-paper'
 import { FieldArray, Formik } from 'formik'
-import { Unit } from '@/app/models/Unit'
-import { addRecipeValidator } from '@/app/utils/addRecipeValidator'
-import { IconButton, Snackbar, TextInput, TouchableRipple } from 'react-native-paper'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Dropdown } from 'react-native-paper-dropdown'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import * as ImagePicker from 'expo-image-picker'
 import { Header } from '@/app/components/Header'
-import { LinearGradient } from 'expo-linear-gradient'
+import { Unit } from '@/app/models/Unit'
+import { addRecipeValidator } from '@/app/utils/addRecipeValidator'
 import { RecipeContext } from '@/app/context/RecipeContext'
 import { SnackbarContext } from '@/app/context/SnackbarContext'
+import { colors } from '@/app/constants/colors'
 
 export const AddScreen: FC = () => {
     const { addRecipe } = useContext(RecipeContext)
     const { showSnackbar } = useContext(SnackbarContext)
-    const [imgUrl, setImgUrl] = useState<string>('default_food.jpeg')
+
+    // Image
+    const [imgUrl, setImgUrl] = useState<string>()
 
     // Refs
     const titleRef = useRef<any>(null)
@@ -55,7 +59,20 @@ export const AddScreen: FC = () => {
                         })
                     }}
                 >
-                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => {
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => {
+                        const handleImageChange = async () => {
+                            const image = await ImagePicker.launchImageLibraryAsync({
+                                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                allowsEditing: true,
+                                aspect: [1, 1],
+                                quality: 1,
+                            })
+                            if (!image.canceled) {
+                                await setFieldValue('image', image.assets[0].uri)
+                                setImgUrl(image.assets[0].uri)
+                            }
+                        }
+
                         return (
                             <View style={styles.container}>
                                 <ScrollView
@@ -63,12 +80,14 @@ export const AddScreen: FC = () => {
                                     contentContainerStyle={styles.scrollContent}
                                 >
                                     {/* Clickable image */}
-                                    <TouchableRipple onPress={() => console.log('Handle image upload')}>
+                                    <TouchableRipple onPress={handleImageChange}>
                                         <View style={styles.imageContainer}>
                                             <Image
-                                                source={{
-                                                    uri: `${process.env.EXPO_PUBLIC_API_URL}images/${imgUrl}`,
-                                                }}
+                                                source={
+                                                    imgUrl
+                                                        ? { uri: imgUrl }
+                                                        : require('@/assets/images/uploadImage.png')
+                                                }
                                                 style={styles.image}
                                             />
                                             <LinearGradient
@@ -266,7 +285,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         marginBottom: 24,
-        marginTop: 56,
+        marginTop: 40,
         elevation: 8,
         borderRadius: 30,
     },
@@ -312,7 +331,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderTopWidth: 1,
         borderColor: '#CCC',
-        backgroundColor: '#FFF',
+        backgroundColor: colors.onPrimary,
         elevation: 5,
     },
     addButton: {
