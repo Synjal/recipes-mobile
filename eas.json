@@ -4,10 +4,17 @@
   },
   "build": {
     "production": {
+
       "autoIncrement": true,
       "distribution": "internal",
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
+      },
       "env": {
-        "EXPO_PUBLIC_API_URL":"https://recipes-api-test-600h.onrender.com/"
+        "EXPO_PUBLIC_API_URL":"https://recipes-api-prod.onrender.com/"
       },
       "channel": "production"
     },
@@ -15,10 +22,12 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "image": "latest"
       },
       "ios": {
-        "simulator": true
+        "simulator": true,
+        "image": "latest"
       },
       "env": {
         "EXPO_PUBLIC_API_URL":"https://recipes-api-test-600h.onrender.com/"
