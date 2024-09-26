@@ -85,7 +85,7 @@ export const AddScreen: FC = () => {
                                                 source={
                                                     imgUrl
                                                         ? { uri: imgUrl }
-                                                        : require('@/assets/images/uploadImage.png')
+                                                        : require('@/assets/images/uploadImage.jpeg')
                                                 }
                                                 style={styles.image}
                                             />

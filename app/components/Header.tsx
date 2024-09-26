@@ -8,8 +8,6 @@ import { colors } from '@/app/constants/colors'
 import { RecipeContext } from '@/app/context/RecipeContext'
 import { SnackbarContext } from '@/app/context/SnackbarContext'
 
-//TODO: Create an update screen or modal
-
 export const Header: FC<HeaderProps> = ({
     recipe,
     back = true,

@@ -16,6 +16,8 @@ export const RecipeDetailsScreen: FC = () => {
     const ingredientsList = recipe.ingredients
     const { uploadImage, updateRecipe } = useContext(RecipeContext)
 
+    console.log(recipe)
+
     // Image
     const [imgUrl, setImgUrl] = useState<string>(recipe.image || '')
     const handleImageChange = async () => {

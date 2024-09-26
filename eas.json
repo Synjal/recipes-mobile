@@ -1,13 +1,17 @@
 {
+  "cli": {
+    "appVersionSource": "remote"
+  },
   "build": {
     "production": {
-      "distribution": "store",
+      "autoIncrement": true,
+      "distribution": "internal",
       "env": {
-        "API_URL":"https://recipes-api-test-600h.onrender.com/"
+        "EXPO_PUBLIC_API_URL":"https://recipes-api-test-600h.onrender.com/"
       },
       "channel": "production"
     },
-    "test": {
+    "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
@@ -17,9 +21,9 @@
         "simulator": true
       },
       "env": {
-        "API_URL":"https://recipes-api-test-600h.onrender.com/"
+        "EXPO_PUBLIC_API_URL":"https://recipes-api-test-600h.onrender.com/"
       },
-      "channel": "test"
+      "channel": "development"
     }
   }
 }

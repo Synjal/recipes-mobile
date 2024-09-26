@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "recipes-mobile",
-    "slug": "recipes-mobile",
+    "name": "recipes",
+    "slug": "recipes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/images/splash.jpg",
+      "image": "./assets/images/splash.jpeg",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.layp.recipes"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +34,12 @@
         "projectId": "c265205f-30ac-41e4-800d-637b8d6bd665"
       }
     },
-    "owner": "layp"
+    "owner": "layp",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c265205f-30ac-41e4-800d-637b8d6bd665"
+    }
   }
 }

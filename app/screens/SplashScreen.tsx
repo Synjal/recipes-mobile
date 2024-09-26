@@ -8,14 +8,14 @@ export const SplashScreen: FC<SplashScreenProps> = ({ navigation }) => {
 
     useEffect(() => {
         const initializeApp = async () => {
-            await getAllRecipes()
+            getAllRecipes()
             navigation.navigate('RecipeScreen')
         }
         const timeout = setTimeout(initializeApp, 3000)
         return () => clearTimeout(timeout)
     }, [navigation])
 
-    return <ImageBackground source={require('../../assets/images/splash.jpg')} style={styles.background} />
+    return <ImageBackground source={require('../../assets/images/splash.jpeg')} style={styles.background} />
 }
 
 const styles = StyleSheet.create({
